@@ -33,6 +33,11 @@ if (process.env.NODE_ENV !== 'test') {
     next();
   });
 }
+// — Serve Frontend
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
