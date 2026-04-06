@@ -1479,8 +1479,8 @@
     // ─── Init ─────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('api-base-url').value = API;
-      if (token) { verifyToken(); }
     });
+
 
     function saveApiUrl() {
       API = document.getElementById('api-base-url').value.replace(/\/$/, '');
