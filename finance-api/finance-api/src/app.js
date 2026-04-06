@@ -35,7 +35,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 // — Serve Frontend
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  const filePath = path.join(__dirname, '../index.html');
+  const content = fs.readFileSync(filePath, 'utf8');
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end(content);
 });
 
 
