@@ -1,0 +1,14 @@
+{
+  "name": "finance-api",
+  "version": "1.0.0",
+  "description": "Finance dashboard REST API — zero external dependencies",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "seed":  "node src/seed.js",
+    "test":  "node --test tests/api.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
