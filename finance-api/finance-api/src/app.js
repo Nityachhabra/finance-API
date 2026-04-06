@@ -2,7 +2,7 @@
 'use strict';
 
 // Load .env manually — no dotenv dependency needed
-const fs   = require('fs');
+const fs = require('fs');
 const path = require('path');
 const envPath = path.resolve(__dirname, '../.env');
 if (fs.existsSync(envPath)) {
@@ -12,11 +12,19 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const http   = require('http');
+const http = require('http');
 const Router = require('./middleware/router');
 const { errorHandler } = require('./middleware');
-
 const app = new Router();
+
+// CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+  next();
+});
 
 // ── Request logger (dev only) ─────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'test') {
@@ -35,12 +43,12 @@ app.get('/health', (_req, res) => {
 // The custom router's mount() copies all sub-router routes with the prefix
 // prepended, so we can use the familiar /auth /users /records structure.
 
-const authRouter    = require('./routes/auth');
-const usersRouter   = require('./routes/users');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./routes/users');
 const recordsRouter = require('./routes/records');
 
-app.mount('/auth',    authRouter);
-app.mount('/users',   usersRouter);
+app.mount('/auth', authRouter);
+app.mount('/users', usersRouter);
 app.mount('/records', recordsRouter);
 
 // ── Global error handler ──────────────────────────────────────────────────────
@@ -59,7 +67,7 @@ if (require.main === module) {
   server.listen(PORT, () => {
     console.log(`\n🚀  Finance API  —  http://localhost:${PORT}`);
     console.log(`    Env : ${process.env.NODE_ENV || 'development'}`);
-    console.log(`    Data: ${process.env.DB_PATH  || './data.json'}\n`);
+    console.log(`    Data: ${process.env.DB_PATH || './data.json'}\n`);
   });
 }
 
